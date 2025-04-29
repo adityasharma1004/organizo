@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --shadow-color: 0deg 0% 0%;
+  --shadow-elevation-low: 0px 0.5px 0.6px hsl(var(--shadow-color) / 0.11),
+    0px 0.8px 1px -1.5px hsl(var(--shadow-color) / 0.11),
+    0px 2px 2.5px -3px hsl(var(--shadow-color) / 0.11);
+  --shadow-elevation-medium: 0px 0.5px 0.6px hsl(var(--shadow-color) / 0.11),
+    0px 1.8px 2.3px -0.8px hsl(var(--shadow-color) / 0.11),
+    0px 4.3px 5.4px -1.7px hsl(var(--shadow-color) / 0.11),
+    0px 10.3px 13px -2.5px hsl(var(--shadow-color) / 0.11);
+  --shadow-elevation-high: 0px 0.5px 0.6px hsl(var(--shadow-color) / 0.09),
+    0px 3.2px 4px -0.4px hsl(var(--shadow-color) / 0.09),
+    0px 6px 7.5px -0.7px hsl(var(--shadow-color) / 0.09),
+    0px 9.9px 12.4px -1.1px hsl(var(--shadow-color) / 0.09),
+    0px 15.7px 19.6px -1.4px hsl(var(--shadow-color) / 0.09),
+    0px 24.5px 30.6px -1.8px hsl(var(--shadow-color) / 0.09),
+    0px 37px 46.3px -2.1px hsl(var(--shadow-color) / 0.09),
+    0px 54.3px 67.9px -2.5px hsl(var(--shadow-color) / 0.09);
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--chakra-colors-gray-100);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--chakra-colors-gray-300);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--chakra-colors-gray-400);
+}
+
+/* Better focus styles */
+:focus {
+  outline: 2px solid var(--chakra-colors-brand-500);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Custom selection color */
+::selection {
+  background: var(--chakra-colors-brand-100);
+  color: var(--chakra-colors-brand-900);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+/* Transition classes */
+.page-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elevation-medium);
+}
+
+/* Clerk overrides */
+.cl-card {
+  box-shadow: var(--shadow-elevation-medium) !important;
+  border: 1px solid var(--chakra-colors-gray-200) !important;
+  border-radius: 16px !important;
+}
+
+.cl-footerAction {
+  color: var(--chakra-colors-brand-600) !important;
+}
+
+.cl-footerActionLink {
+  color: var(--chakra-colors-brand-500) !important;
+  font-weight: 500 !important;
+}
+
+.cl-footerActionLink:hover {
+  color: var(--chakra-colors-brand-600) !important;
+}
+
+/* Chart.js tooltip customization */
+.chartjs-tooltip {
+  background: var(--chakra-colors-white) !important;
+  border: 1px solid var(--chakra-colors-gray-200) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--shadow-elevation-medium) !important;
+  padding: 8px 12px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+}

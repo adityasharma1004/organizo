@@ -1,0 +1,138 @@
+/* Mobile-specific styles for Organizo */
+
+/* Global mobile adjustments */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Increase touch targets for better mobile interactions */
+  button, 
+  a, 
+  [role="button"],
+  input, 
+  select, 
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Adjust text sizes for mobile */
+  h1 {
+    font-size: 1.75rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Fix container padding for mobile */
+  .chakra-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Adjust card padding for mobile */
+  .chakra-card {
+    padding: 1rem !important;
+  }
+  
+  /* Fix form elements on mobile */
+  input, 
+  select, 
+  textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+  
+  /* Fix charts on mobile */
+  canvas {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* Fix tables on mobile */
+  .chakra-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  /* Stack grid items on mobile */
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  /* Special fix for transaction forms */
+  .transaction-form-mobile {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  /* Fix spacing between stacked elements */
+  .mobile-stack > * {
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Fix sidebar animation */
+  .chakra-slide {
+    transition: transform 0.3s ease !important;
+  }
+  
+  /* Auth page specific responsive fixes */
+  .cl-rootBox {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .cl-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1rem !important;
+  }
+  
+  .cl-formButtonPrimary,
+  .cl-socialButtonsBlockButton {
+    height: 48px !important;
+  }
+  
+  .cl-socialButtons {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  .cl-internal-b3fm6y {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  /* Fix padding in auth card layout */
+  .auth-card {
+    padding: 1rem !important;
+  }
+}
+
+/* iPhone SE / Small device specific fixes */
+@media (max-width: 375px) {
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  .chakra-container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  /* Even smaller padding for auth card on tiny screens */
+  .cl-card {
+    padding: 0.75rem !important;
+  }
+  
+  .cl-formFieldInput {
+    font-size: 14px !important;
+  }
+}

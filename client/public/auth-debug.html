@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizo Auth Debugger</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    h1 {
+      color: #4a5568;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #5a5ae3;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #4a4acf;
+    }
+    pre {
+      background-color: #f1f5f9;
+      padding: 15px;
+      border-radius: 4px;
+      overflow: auto;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    .success { color: green; }
+    .error { color: red; }
+    .warning { color: orange; }
+    .info-box {
+      background-color: #ebf8ff;
+      border-left: 4px solid #4299e1;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Organizo Auth Debugger</h1>
+  
+  <div class="card">
+    <h2>Authentication Status</h2>
+    <div id="auth-status">Checking authentication status...</div>
+    <div id="user-info"></div>
+  </div>
+  
+  <div class="card">
+    <h2>Environment Information</h2>
+    <div id="env-info"></div>
+  </div>
+  
+  <div class="card">
+    <h2>Quick Actions</h2>
+    <button id="btn-sign-in">Go To Sign In</button>
+    <button id="btn-sign-up">Go To Sign Up</button>
+    <button id="btn-sign-out">Sign Out</button>
+    <button id="btn-home">Go To Home</button>
+    <button id="btn-clear-storage">Clear Local Storage</button>
+  </div>
+  
+  <div class="card">
+    <h2>Auth Debug Console</h2>
+    <div class="info-box">
+      <p>This tool helps diagnose authentication issues in your Organizo app. Use the buttons above to navigate or troubleshoot.</p>
+    </div>
+    <pre id="debug-log"></pre>
+  </div>
+
+  <!-- Load Clerk.js directly for debugging -->
+  <script>
+    // Log function that writes to the debug console
+    function log(message, type = 'info') {
+      const logElement = document.getElementById('debug-log');
+      const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
+      logElement.innerHTML += `<span class="${type}">[${timestamp}] ${message}</span>\n`;
+      console.log(`[${type}] ${message}`);
+    }
+
+    // Get environment info
+    function showEnvironmentInfo() {
+      const envInfo = document.getElementById('env-info');
+      envInfo.innerHTML = `
+        <p><strong>Current URL:</strong> ${window.location.href}</p>
+        <p><strong>Origin:</strong> ${window.location.origin}</p>
+        <p><strong>Pathname:</strong> ${window.location.pathname}</p>
+        <p><strong>Local Storage Items:</strong> ${localStorage.length}</p>
+      `;
+    }
+
+    // Check for Clerk authentication
+    async function checkAuthStatus() {
+      const statusElement = document.getElementById('auth-status');
+      const userInfoElement = document.getElementById('user-info');
+      
+      try {
+        // Check if Clerk global is available
+        if (!window.Clerk) {
+          statusElement.innerHTML = '<span class="error">⚠️ Clerk is not loaded. Authentication will not work.</span>';
+          log('Clerk is not loaded. Make sure VITE_CLERK_PUBLISHABLE_KEY is set correctly', 'error');
+          return;
+        }
+        
+        log('Clerk is loaded, attempting to check session', 'info');
+        
+        // Try to access Clerk user
+        await window.Clerk.load();
+        
+        if (window.Clerk.user) {
+          statusElement.innerHTML = '<span class="success">✓ Authenticated</span>';
+          userInfoElement.innerHTML = `
+            <p><strong>User ID:</strong> ${window.Clerk.user.id}</p>
+            <p><strong>Email:</strong> ${window.Clerk.user.primaryEmailAddress?.emailAddress || 'Not available'}</p>
+          `;
+          log('Successfully authenticated with Clerk', 'success');
+        } else {
+          statusElement.innerHTML = '<span class="warning">⚠️ Not authenticated</span>';
+          log('No user session found', 'warning');
+        }
+      } catch (error) {
+        statusElement.innerHTML = `<span class="error">⚠️ Authentication error: ${error.message}</span>`;
+        log(`Auth check error: ${error.message}`, 'error');
+      }
+    }
+
+    // Set up button handlers
+    document.addEventListener('DOMContentLoaded', () => {
+      showEnvironmentInfo();
+      
+      // Try to dynamically load Clerk
+      const clerkScript = document.createElement('script');
+      clerkScript.src = 'https://cdn.clerk.io/clerk.browser.js';
+      clerkScript.async = true;
+      clerkScript.crossOrigin = 'anonymous';
+      clerkScript.onload = () => {
+        log('Clerk script loaded', 'info');
+        checkAuthStatus();
+      };
+      clerkScript.onerror = () => {
+        log('Failed to load Clerk script', 'error');
+      };
+      document.head.appendChild(clerkScript);
+      
+      // Set up button handlers
+      document.getElementById('btn-sign-in').addEventListener('click', () => {
+        window.location.href = '/sign-in';
+      });
+      
+      document.getElementById('btn-sign-up').addEventListener('click', () => {
+        window.location.href = '/sign-up';
+      });
+      
+      document.getElementById('btn-home').addEventListener('click', () => {
+        window.location.href = '/';
+      });
+      
+      document.getElementById('btn-sign-out').addEventListener('click', async () => {
+        try {
+          if (window.Clerk?.user) {
+            await window.Clerk.signOut();
+            log('Signed out successfully', 'success');
+            window.location.reload();
+          } else {
+            log('No user to sign out', 'warning');
+          }
+        } catch (error) {
+          log(`Sign out error: ${error.message}`, 'error');
+        }
+      });
+      
+      document.getElementById('btn-clear-storage').addEventListener('click', () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        log('Local storage and session storage cleared', 'info');
+        showEnvironmentInfo();
+      });
+      
+      log('Auth debugger initialized', 'info');
+    });
+  </script>
+</body>
+</html>
